@@ -2,6 +2,7 @@ from math import cos, sin
 
 from pygame import init as pg_init, display as pg_display, Surface, Color, Rect, event as pg_event, QUIT, draw as pg_draw
 from pygame.time import Clock
+from pygame.freetype import Font
 import pygame_gui
 
 pg_init()
@@ -34,6 +35,7 @@ default_rect = Rect(
     (100, 50)
 )
 
+digi_clock_font = Font("assets/fonts/7segmentsfont.ttf", 20)
 temp = 0
 second = 0
 minute = 0
@@ -101,6 +103,13 @@ while is_running:
         (clock_size, clock_size),
         degrees_to_pygame(clock_size, round(hour * (360 / 24))),
         3
+    )
+    
+    digi_clock_font.render_to(
+        window_surface,
+        MID,
+        f"{str(hour).zfill(2)}:{str(minute).zfill(2)}:{str(second).zfill(2)}",
+        Color("#42f5d1")
     )
         
     temp += 1
