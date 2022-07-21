@@ -54,6 +54,7 @@ def degrees_to_pygame(radius : int, angle : int):
 
 # Main loop
 while is_running:
+    # Set framerate
     clock.tick(FPS)
     
     # Process events
@@ -111,6 +112,7 @@ while is_running:
         f"{hour:02d}:{minute:02d}:{second:02d}",
         Color("#42f5d1")
     )
+    # digi_clock is now a tuple of (Surface, Rect)
     
     # Draw digital clock
     window_surface.blit(
