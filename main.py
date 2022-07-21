@@ -23,6 +23,7 @@ clock = Clock()
 
 # Some constants and functions
 is_running = True
+FPS = 60
 TL_CRN = (0, 0)
 TR_CRN = (res[0], 0)
 BL_CRN = (0, res[1])
@@ -32,6 +33,11 @@ default_rect = Rect(
     (0, 0),
     (100, 50)
 )
+
+temp = 0
+second = 0
+minute = 0
+hour = 0
 
 def center_rect(rect : Rect = default_rect):
     rect.x = MID[0] - rect.width // 2
@@ -45,7 +51,7 @@ def degrees_to_pygame(radius : int, angle : int):
 
 # Main loop
 while is_running:
-    clock.tick(60)
+    clock.tick(FPS)
     
     # Process events
     for event in pg_event.get():
@@ -72,11 +78,42 @@ while is_running:
     
     # Draw seconds
     pg_draw.line(
-        bg,
+        window_surface,
+        Color(255, 50, 50),
+        (clock_size, clock_size),
+        degrees_to_pygame(clock_size, round(second * (360 / 60))),
+        3
+    )
+    
+    # Draw minutes
+    pg_draw.line(
+        window_surface,
+        Color("#4287f5"),
+        (clock_size, clock_size),
+        degrees_to_pygame(clock_size, round(minute * (360 / 60))),
+        3
+    )
+    
+    # Draw hours
+    pg_draw.line(
+        window_surface,
         Color(0, 0, 0),
         (clock_size, clock_size),
-        degrees_to_pygame(clock_size, 45),
-        10
+        degrees_to_pygame(clock_size, round(hour * (360 / 24))),
+        3
     )
-
+        
+    temp += 1
+    if temp == FPS:
+        second += 1
+        temp = 0
+    if second == 60:
+        second = 0
+        minute += 1
+    if minute == 60:
+        minute = 0
+        hour += 1
+    if hour == 24:
+        hour = 0
+    
     pg_display.update()
