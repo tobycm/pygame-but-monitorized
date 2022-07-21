@@ -1,4 +1,5 @@
 from math import cos, sin
+from datetime import datetime
 
 from pygame import init as pg_init, display as pg_display, Surface, Color, Rect, event as pg_event, QUIT, draw as pg_draw
 from pygame.time import Clock
@@ -105,24 +106,30 @@ while is_running:
         3
     )
     
-    digi_clock_font.render_to(
-        window_surface,
-        MID,
-        f"{str(hour).zfill(2)}:{str(minute).zfill(2)}:{str(second).zfill(2)}",
+    # Create digital clock as Surface
+    digi_clock = digi_clock_font.render(
+        f"{hour:02d}:{minute:02d}:{second:02d}",
         Color("#42f5d1")
     )
+    
+    # Draw digital clock
+    window_surface.blit(
+        digi_clock[0],
+        (
+            MID[0] - digi_clock[1].width // 2,
+            MID[1] - digi_clock[1].height // 2
+        )
+    )
         
+    # Update time
     temp += 1
     if temp == FPS:
-        second += 1
+        now = datetime.now()
+        now = now.time()
+        second = now.second
+        minute = now.minute
+        hour = now.hour
         temp = 0
-    if second == 60:
-        second = 0
-        minute += 1
-    if minute == 60:
-        minute = 0
-        hour += 1
-    if hour == 24:
-        hour = 0
+
     
     pg_display.update()
